@@ -15,7 +15,7 @@ class Venue(models.Model):
     #comment = models.ForeignKey("Comment", on_delete=models.CASCADE)
     rating = models.ForeignKey("Rating", on_delete=models.CASCADE)
     venue_type = models.ForeignKey("VenueType", on_delete=models.CASCADE)
-    total_vote_counts = models.IntegerField(default=0)
+    total_vote_count = models.IntegerField(default=0)
     created_by = models.ForeignKey(User)
 
     def __str__(self):

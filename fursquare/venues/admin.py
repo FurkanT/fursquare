@@ -7,7 +7,7 @@ from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 class VenueAdmin(admin.ModelAdmin):
     model = Venue
-    list_display = ('venue_name', 'venue_type', 'venue_address', 'phone_number', 'rating', 'total_vote_counts')
+    list_display = ('venue_name', 'venue_type', 'venue_address', 'phone_number', 'rating', 'total_vote_count')
     search_fields = ('venue_name', 'venue_type')
 
 

@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
     'venues.apps.VenuesConfig',
     'suit',
     'django.contrib.admin',
