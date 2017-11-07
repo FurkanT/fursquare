@@ -2,20 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="805d50ac-9f50-45c1-9531-8e5b35b3613c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fursquare/venues/serializers.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fursquare/venues/urls.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/venues/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/venues/admin.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/venues/apps.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/venues/migrations/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/venues/models.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/venues/tests.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/venues/views.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fursquare/db.sqlite3" afterPath="$PROJECT_DIR$/fursquare/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fursquare/fursquare/settings.py" afterPath="$PROJECT_DIR$/fursquare/fursquare/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fursquare/fursquare/urls.py" afterPath="$PROJECT_DIR$/fursquare/fursquare/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fursquare/venues/admin.py" afterPath="$PROJECT_DIR$/fursquare/venues/admin.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fursquare/venues/models.py" afterPath="$PROJECT_DIR$/fursquare/venues/models.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fursquare/venues/serializers.py" afterPath="$PROJECT_DIR$/fursquare/venues/serializers.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fursquare/venues/urls.py" afterPath="$PROJECT_DIR$/fursquare/venues/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fursquare/venues/views.py" afterPath="$PROJECT_DIR$/fursquare/venues/views.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,8 +18,8 @@
       <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fursquare/venues/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="960">
-              <caret line="24" column="10" lean-forward="true" selection-start-line="24" selection-start-column="10" selection-end-line="24" selection-end-column="10" />
+            <state relative-caret-position="360">
+              <caret line="17" column="20" lean-forward="false" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="20" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -54,8 +42,8 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fursquare/venues/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="6" column="47" lean-forward="true" selection-start-line="6" selection-start-column="47" selection-end-line="6" selection-end-column="47" />
+            <state relative-caret-position="320">
+              <caret line="8" column="59" lean-forward="false" selection-start-line="8" selection-start-column="59" selection-end-line="8" selection-end-column="59" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
               </folding>
@@ -63,21 +51,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fursquare/fursquare/settings.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1320">
-              <caret line="33" column="4" lean-forward="false" selection-start-line="33" selection-start-column="4" selection-end-line="33" selection-end-column="4" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fursquare/venues/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="15" column="59" lean-forward="true" selection-start-line="15" selection-start-column="59" selection-end-line="15" selection-end-column="59" />
+            <state relative-caret-position="1131">
+              <caret line="66" column="11" lean-forward="false" selection-start-line="66" selection-start-column="11" selection-end-line="66" selection-end-column="11" />
               <folding>
                 <element signature="e#0#54#0" expanded="true" />
               </folding>
@@ -88,8 +66,8 @@
       <file leaf-file-name="serializers.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fursquare/venues/serializers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="560">
-              <caret line="14" column="4" lean-forward="false" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
+            <state relative-caret-position="931">
+              <caret line="96" column="0" lean-forward="true" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -125,8 +103,8 @@
         <option value="$PROJECT_DIR$/fursquare/fursquare/settings.py" />
         <option value="$PROJECT_DIR$/fursquare/venues/models.py" />
         <option value="$PROJECT_DIR$/fursquare/venues/admin.py" />
-        <option value="$PROJECT_DIR$/fursquare/venues/urls.py" />
         <option value="$PROJECT_DIR$/fursquare/venues/views.py" />
+        <option value="$PROJECT_DIR$/fursquare/venues/urls.py" />
         <option value="$PROJECT_DIR$/fursquare/venues/serializers.py" />
       </list>
     </option>
@@ -394,6 +372,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/fursquare/fursquare/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1320">
+          <caret line="33" column="4" lean-forward="false" selection-start-line="33" selection-start-column="4" selection-end-line="33" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/fursquare/venues/admin.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -404,38 +390,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fursquare/fursquare/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1320">
-          <caret line="33" column="4" lean-forward="false" selection-start-line="33" selection-start-column="4" selection-end-line="33" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fursquare/venues/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="6" column="47" lean-forward="true" selection-start-line="6" selection-start-column="47" selection-end-line="6" selection-end-column="47" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fursquare/venues/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="960">
-          <caret line="24" column="10" lean-forward="true" selection-start-line="24" selection-start-column="10" selection-end-line="24" selection-end-column="10" />
+        <state relative-caret-position="360">
+          <caret line="17" column="20" lean-forward="false" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="20" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/fursquare/venues/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="8" column="59" lean-forward="false" selection-start-line="8" selection-start-column="59" selection-end-line="8" selection-end-column="59" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/fursquare/venues/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="15" column="59" lean-forward="true" selection-start-line="15" selection-start-column="59" selection-end-line="15" selection-end-column="59" />
+        <state relative-caret-position="1131">
+          <caret line="66" column="11" lean-forward="false" selection-start-line="66" selection-start-column="11" selection-end-line="66" selection-end-column="11" />
           <folding>
             <element signature="e#0#54#0" expanded="true" />
           </folding>
@@ -444,8 +422,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fursquare/venues/serializers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="560">
-          <caret line="14" column="4" lean-forward="false" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
+        <state relative-caret-position="931">
+          <caret line="96" column="0" lean-forward="true" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
