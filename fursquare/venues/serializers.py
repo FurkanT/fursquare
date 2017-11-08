@@ -11,6 +11,9 @@ class VenueTypeSerializer(serializers.ModelSerializer):
         model = VenueType
         fields = ('id', 'venue_type')
 
+    def create(self, validated_data):
+        return Venue.objects.create(**validated_data)
+
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -30,22 +33,24 @@ class VenueSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return Venue.objects.create(**validated_data)
 
-    def update(self, instance, validated_data):
-        instance.name = validated_data.get('name', instance.name)
-        instance.address = validated_data.get('address', instance.address)
-        instance.phone_number = validated_data.get('phone_number', instance.phone_number)
-        instance.language = validated_data.get('language', instance.language)
-        instance.rating = validated_data.get('rating', instance.rating)
-        instance.venue_type = validated_data.get('venue_type', instance.venue_type)
-        instance.total_vote_count = validated_data.get('total_vote_count', instance.total_vote_count)
-        instance.save()
-        return instance
+    # def update(self, instance, validated_data):
+    #     instance.name = validated_data.get('name', instance.name)
+    #     instance.address = validated_data.get('address', instance.address)
+    #     instance.phone_number = validated_data.get('phone_number', instance.phone_number)
+    #     instance.language = validated_data.get('language', instance.language)
+    #     instance.rating = validated_data.get('rating', instance.rating)
+    #     instance.venue_type = validated_data.get('venue_type', instance.venue_type)
+    #     instance.total_vote_count = validated_data.get('total_vote_count', instance.total_vote_count)
+    #     instance.save()
+    #     return instance
 
     def to_representation(self, instance):
         data = super(VenueSerializer, self).to_representation(instance)
-        venue_type_id = data['venue_type']
+        try:
+            venue_type_id = data['venue_type']
+        except KeyError:
+            raise KeyError
         data['venue_type'] = get_venue_type_and_return_serialized_data(venue_type_id)
-        print(JsonResponse(data).content)
         return data
 
 
@@ -58,22 +63,27 @@ class CommentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return Comment.objects.create(**validated_data)
 
-    def update(self, instance, validated_data):
-        instance.title = validated_data.get('title', instance.title)
-        instance.comment = validated_data.get('comment', instance.comment)
-        instance.commented_by = validated_data.get('commented_by', instance.commented_by)
-        instance.commented_to = validated_data.get('commented_to', instance.commented_to)
-        instance.created_date = validated_data.get('created_date', instance.created_date)
-        instance.save()
-        return instance
+    # def update(self, instance, validated_data):
+    #     instance.title = validated_data.get('title', instance.title)
+    #     instance.comment = validated_data.get('comment', instance.comment)
+    #     instance.commented_by = validated_data.get('commented_by', instance.commented_by)
+    #     instance.commented_to = validated_data.get('commented_to', instance.commented_to)
+    #     instance.created_date = validated_data.get('created_date', instance.created_date)
+    #     instance.save()
+    #     return instance
 
     def to_representation(self, instance):
         data = super(CommentSerializer, self).to_representation(instance)
-        user_id = data['commented_by']
+        try:
+            user_id = data['commented_by']
+        except KeyError:
+            raise KeyError
         data['commented_by'] = get_user_object_and_return_serialized_data(user_id)
-        venue_id = data['commented_to']
+        try:
+            venue_id = data['commented_to']
+        except KeyError:
+            raise KeyError
         data['commented_to'] = get_venue_object_and_return_serialized_data(venue_id)
-        print(JsonResponse(data).content)
         return data
 
 
