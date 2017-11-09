@@ -3,6 +3,8 @@ from django.core.validators import MinValueValidator,MaxValueValidator,RegexVali
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
+from django.conf import settings
+from rest_framework.authtoken.models import Token
 
 
 class Venue(models.Model):
@@ -13,10 +15,11 @@ class Venue(models.Model):
                                          " Up to 15 digits allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=15, blank=True, unique=True)
     #comment = models.ForeignKey("Comment", on_delete=models.CASCADE)
-    rating = models.ForeignKey("Rating", on_delete=models.CASCADE)
+    #rating = models.ForeignKey("Rating", on_delete=models.CASCADE, null=True)
     venue_type = models.ForeignKey("VenueType", on_delete=models.CASCADE)
-    total_vote_count = models.IntegerField(default=0)
     created_by = models.ForeignKey(User)
+
+
 
     def __str__(self):
         return self.venue_name
@@ -44,10 +47,18 @@ class Comment(models.Model):
 
 
 class Rating(models.Model):
-    rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)],)
+    rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)], default=0)
+    sum_of_votes = models.IntegerField(default=0)
+    total_vote_count = models.IntegerField(default=1)
+    venue = models.ForeignKey("Venue", on_delete=models.CASCADE)
+    rated_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return str(self.rating)
+    @property
+    def get_average_rating(self):
+        return '%d' % (self.sum_of_votes/self.total_vote_count)
+
+    # class Meta:
+    #     unique_together = ('rated_by', 'venue')
 
 
 class Profile(models.Model):
@@ -68,3 +79,7 @@ def update_user_profile(sender, instance, created, **kwargs):
     instance.profile.save()
 
 
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
