@@ -16,7 +16,7 @@ tests/report/
 __pycache__/
 *.py[cod]
 *$py.class
-
+fursquare/fursquare/__pycache__/
 # C extensions
 *.so
 

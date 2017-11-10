@@ -23,7 +23,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 class RatingAdmin(admin.ModelAdmin):
     model = Rating
-    list_display = ('sum_of_votes', 'total_vote_count')
+    list_display = ('rating', 'venue', 'rated_by')
     #list_display = ('sum_of_votes', 'total_vote_count', 'venue', 'rated_by')
 
 

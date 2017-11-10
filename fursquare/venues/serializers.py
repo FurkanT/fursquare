@@ -60,7 +60,9 @@ class VenueSerializer(serializers.ModelSerializer):
         except KeyError:
             raise KeyError
         venue_id = data['id']
+
         data['rating'] = get_rating(venue_id)
+        data['total_vote_count'] = get_vote_count(venue_id)
         data['created_by'] = get_user_object_and_return_serialized_data(user_id)
         data['venue_type'] = get_venue_type_and_return_serialized_data(venue_type_id)
         return data
@@ -94,7 +96,7 @@ class RatingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Rating
-        fields = ('id', 'total_vote_count', 'venue', 'rated_by')
+        fields = ('id', 'rating', 'venue', 'rated_by')
 
     def create(self, validated_data):
         return Rating.objects.create(**validated_data)
@@ -105,13 +107,15 @@ class RatingSerializer(serializers.ModelSerializer):
             venue_id = data['venue']
         except KeyError:
             raise KeyError
-        data['average_rating'] = get_rating(venue_id)
-        print(data['average_rating'])
+        data['venue'] = get_venue_object_and_return_serialized_data(venue_id)
+
         try:
             user_id = data['rated_by']
         except KeyError:
             raise KeyError
         data['rated_by'] = get_user_object_and_return_serialized_data(user_id)
+        data['rating'] = str(data['rating'])
+        return data
         #rating = data['rating']
 
 
@@ -135,14 +139,13 @@ def get_venue_type_and_return_serialized_data(venue_type_id):
 
 def get_rating(venue_id):
     venue = get_object_or_404(Venue, pk=venue_id)
-
-    #venue = Venue.objects.get(id=venue_id)
     #Rating.objects.all().delete()
-    try:
-        rating = Rating.objects.get(venue__id=venue.id).get_average_rating
-    except ObjectDoesNotExist:
-        raise ObjectDoesNotExist
-    return rating
+    rate = venue.get_average_rating
+    return rate
 
 
+def get_vote_count(venue_id):
+    venue = get_object_or_404(Venue, pk=venue_id)
+    total_vote_count = venue.get_venue_vote_count
+    return str(total_vote_count)
 

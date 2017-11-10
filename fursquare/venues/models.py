@@ -1,10 +1,12 @@
 from django.db import models
-from django.core.validators import MinValueValidator,MaxValueValidator,RegexValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.conf import settings
 from rest_framework.authtoken.models import Token
+from django.db.models import Avg
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 
 class Venue(models.Model):
@@ -14,15 +16,31 @@ class Venue(models.Model):
                                  message="Phone number must be entered in the format: '+999999999'."
                                          " Up to 15 digits allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=15, blank=True, unique=True)
-    #comment = models.ForeignKey("Comment", on_delete=models.CASCADE)
-    #rating = models.ForeignKey("Rating", on_delete=models.CASCADE, null=True)
     venue_type = models.ForeignKey("VenueType", on_delete=models.CASCADE)
     created_by = models.ForeignKey(User)
 
-
-
     def __str__(self):
         return self.venue_name
+
+    @property
+    def get_average_rating(self):
+        try:
+            rating = Rating.objects.get(venue__id=self.pk).rating
+        except ObjectDoesNotExist:
+            rating = "No one rated yet"
+        except MultipleObjectsReturned:
+            rating = int(Rating.objects.filter(venue__id=self.pk).aggregate(Avg('rating'))['rating__avg'])
+        return str(rating)
+
+    @property
+    def get_venue_vote_count(self):
+        vote_count = Rating.objects.filter(venue__id=self.pk).count()
+        return vote_count
+
+    @property
+    def get_venue_ratings(self):
+        ratings = Rating.objects.filter(venue__id=self.pk)
+        return ratings
 
 
 class VenueType(models.Model):
@@ -48,17 +66,11 @@ class Comment(models.Model):
 
 class Rating(models.Model):
     rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)], default=0)
-    sum_of_votes = models.IntegerField(default=0)
-    total_vote_count = models.IntegerField(default=1)
-    venue = models.ForeignKey("Venue", on_delete=models.CASCADE)
-    rated_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    venue = models.ForeignKey("Venue", related_name='ratings', on_delete=models.CASCADE)
+    rated_by = models.ForeignKey(User, related_name='ratings', on_delete=models.CASCADE)
 
-    @property
-    def get_average_rating(self):
-        return '%d' % (self.sum_of_votes/self.total_vote_count)
-
-    # class Meta:
-    #     unique_together = ('rated_by', 'venue')
+    class Meta:
+        unique_together = ('rated_by', 'venue')
 
 
 class Profile(models.Model):

@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'venues.apps.VenuesConfig',
     'suit',
+
+    'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
