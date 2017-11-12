@@ -13,7 +13,7 @@ class VenueAdmin(admin.ModelAdmin):
 
 class VenueTypeAdmin(admin.ModelAdmin):
     model = VenueType
-    list_display = ('venue_type', 'created_by', 'approved')
+    list_display = ('venue_type', 'created_by', 'is_approved')
 
 
 class CommentAdmin(admin.ModelAdmin):

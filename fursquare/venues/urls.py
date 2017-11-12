@@ -18,5 +18,7 @@ urlpatterns = [
     url(r'^user-details/(?P<pk>[0-9]+)$', views.user_detail),
     url(r'^venues/(?P<pk>[0-9]+)/ratings$', views.venue_rating_list),
     url(r'^venues/(?P<venue_pk>[0-9]+)/ratings/(?P<rating_pk>[0-9]+)/$', views.venue_rating_detail),
-    url(r'^api-token-auth/', token_views.obtain_auth_token)
+    url(r'^api-token-auth/', token_views.obtain_auth_token),
+    url(r'^login/$', views.login),
+
 ]

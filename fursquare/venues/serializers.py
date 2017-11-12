@@ -17,10 +17,7 @@ class VenueTypeSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super(VenueTypeSerializer, self).to_representation(instance)
-        try:
-            user_id = data['created_by']
-        except KeyError:
-            raise KeyError
+        user_id = data['created_by']
         data['created_by'] = get_user_object_and_return_serialized_data(user_id)
         return data
 
@@ -37,8 +34,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 class VenueSerializer(serializers.ModelSerializer):
 
-    #venue_type = serializers.PrimaryKeyRelatedField(read_only=True)
-
     class Meta:
         model = Venue
         fields = ('id', 'venue_name', 'venue_address', 'phone_number', 'created_by', 'venue_type')
@@ -51,16 +46,9 @@ class VenueSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super(VenueSerializer, self).to_representation(instance)
-        try:
-            venue_type_id = data['venue_type']
-        except KeyError:
-            raise KeyError
-        try:
-            user_id = data['created_by']
-        except KeyError:
-            raise KeyError
+        venue_type_id = data['venue_type']
+        user_id = data['created_by']
         venue_id = data['id']
-
         data['rating'] = get_rating(venue_id)
         data['total_vote_count'] = get_vote_count(venue_id)
         data['created_by'] = get_user_object_and_return_serialized_data(user_id)
@@ -79,15 +67,9 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super(CommentSerializer, self).to_representation(instance)
-        try:
-            user_id = data['commented_by']
-        except KeyError:
-            raise KeyError
+        user_id = data['commented_by']
         data['commented_by'] = get_user_object_and_return_serialized_data(user_id)
-        try:
-            venue_id = data['commented_to']
-        except KeyError:
-            raise KeyError
+        venue_id = data['commented_to']
         data['commented_to'] = get_venue_object_and_return_serialized_data(venue_id)
         return data
 
@@ -103,20 +85,12 @@ class RatingSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super(RatingSerializer, self).to_representation(instance)
-        try:
-            venue_id = data['venue']
-        except KeyError:
-            raise KeyError
+        venue_id = data['venue']
         data['venue'] = get_venue_object_and_return_serialized_data(venue_id)
-
-        try:
-            user_id = data['rated_by']
-        except KeyError:
-            raise KeyError
+        user_id = data['rated_by']
         data['rated_by'] = get_user_object_and_return_serialized_data(user_id)
         data['rating'] = str(data['rating'])
         return data
-        #rating = data['rating']
 
 
 def get_venue_object_and_return_serialized_data(venue_id):
@@ -139,13 +113,12 @@ def get_venue_type_and_return_serialized_data(venue_type_id):
 
 def get_rating(venue_id):
     venue = get_object_or_404(Venue, pk=venue_id)
-    #Rating.objects.all().delete()
-    rate = venue.get_average_rating
+    rate = venue.average_rating
     return rate
 
 
 def get_vote_count(venue_id):
     venue = get_object_or_404(Venue, pk=venue_id)
-    total_vote_count = venue.get_venue_vote_count
+    total_vote_count = venue.vote_count
     return str(total_vote_count)
 

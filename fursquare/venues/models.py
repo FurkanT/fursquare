@@ -23,30 +23,25 @@ class Venue(models.Model):
         return self.venue_name
 
     @property
-    def get_average_rating(self):
+    def average_rating(self):
         try:
             rating = Rating.objects.get(venue__id=self.pk).rating
         except ObjectDoesNotExist:
             rating = "No one rated yet"
         except MultipleObjectsReturned:
-            rating = int(Rating.objects.filter(venue__id=self.pk).aggregate(Avg('rating'))['rating__avg'])
+            rating = Rating.objects.filter(venue__id=self.pk).aggregate(Avg('rating'))['rating__avg']
         return str(rating)
 
     @property
-    def get_venue_vote_count(self):
+    def vote_count(self):
         vote_count = Rating.objects.filter(venue__id=self.pk).count()
         return vote_count
-
-    @property
-    def get_venue_ratings(self):
-        ratings = Rating.objects.filter(venue__id=self.pk)
-        return ratings
 
 
 class VenueType(models.Model):
     venue_type = models.CharField(max_length=105, unique=True)
     created_by = models.ForeignKey(User)
-    approved = models.BooleanField(default=False)
+    is_approved = models.BooleanField(default=False)
 
     def __str__(self):
         return self.venue_type
@@ -91,7 +86,4 @@ def update_user_profile(sender, instance, created, **kwargs):
     instance.profile.save()
 
 
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
-        Token.objects.create(user=instance)
+
