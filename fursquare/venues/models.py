@@ -30,7 +30,7 @@ class Venue(models.Model):
             rating = "No one rated yet"
         except MultipleObjectsReturned:
             rating = Rating.objects.filter(venue__id=self.pk).aggregate(Avg('rating'))['rating__avg']
-        return str(rating)
+        return rating
 
     @property
     def vote_count(self):

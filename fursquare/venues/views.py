@@ -39,10 +39,9 @@ def venue_list(request):
         user = request.user
         data['created_by'] = user.id
         serializer = VenueSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 @api_view(['GET', 'PATCH', 'PUT', 'DELETE'])
@@ -57,18 +56,16 @@ def venue_detail(request, pk):
     elif request.method == 'PATCH':
         data = request.data
         serializer = VenueSerializer(venue, data=data, many=True, partial=True)
-        if serializer.valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
     elif request.method == 'PUT':
         data = request.data
         serializer = VenueSerializer(venue, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
     elif request.method == 'DELETE':
         venue.delete()
@@ -97,20 +94,18 @@ def venue_type_list(request):
 @permission_classes((IsAdminOrReadOnly, ))
 def venue_type_detail(request, pk):
     venue_type = get_object_or_404(VenueType, pk=pk)
-
+    data = request.data
     if request.method == 'GET':
         serializer = VenueTypeSerializer(venue_type)
         return Response(serializer.data)
 
     elif request.method == 'PATCH':
-        data = request.data
         serializer = VenueTypeSerializer(venue_type, data=data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        data = request.data
         serializer = VenueTypeSerializer(venue_type, data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -143,20 +138,18 @@ def comment_list(request):
 @permission_classes((IsOwnerOrReadOnly, ))
 def comment_detail(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
-
+    data = request.data
     if request.method == 'GET':
         serializer = CommentSerializer(comment)
         return Response(serializer.data)
 
     elif request.method == 'PATCH':
-        data = request.data
         serializer = CommentSerializer(comment, data=data, many=True, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        data = request.data
         serializer = CommentSerializer(comment, data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -188,20 +181,19 @@ def user_list(request):
 @permission_classes((IsAdminOrReadOnly, ))
 def user_detail(request, pk):
     user = get_object_or_404(User, pk=pk)
+    data = request.data
 
     if request.method == 'GET':
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
     elif request.method == 'PATCH':
-        data = request.data
         serializer = UserSerializer(user, data=data, many=True, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        data = request.data
         serializer = UserSerializer(user, data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -213,7 +205,7 @@ def user_detail(request, pk):
 
 
 @api_view(['GET', 'POST'])
-@permission_classes((IsAdminOrReadOnly, ))
+@permission_classes((IsAuthenticatedOrReadOnly, ))
 def rating_list(request):
     if request.method == 'GET':
         rating_list = Rating.objects.all()
@@ -260,6 +252,8 @@ def venue_rating_detail(request, venue_pk, rating_pk):
     venue = get_object_or_404(Venue, pk=venue_pk)
     ratings = venue.ratings.objects.all()
     rating = get_object_or_404(Rating, pk=rating_pk)
+    data = request.data
+
     if rating not in ratings:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -268,14 +262,12 @@ def venue_rating_detail(request, venue_pk, rating_pk):
         return Response(serializer.data)
 
     elif request.method == 'PATCH':
-        data = request.data
         serializer = RatingSerializer(rating, data=data, many=True, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        data = request.data
         serializer = RatingSerializer(rating, data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -290,20 +282,19 @@ def venue_rating_detail(request, venue_pk, rating_pk):
 @permission_classes((IsAdminOrReadOnly, ))
 def rating_detail(request, pk):
     rating = get_object_or_404(Rating, pk=pk)
+    data = request.data
 
     if request.method == 'GET':
         serializer = RatingSerializer(rating)
         return Response(serializer.data)
 
     elif request.method == 'PATCH':
-        data = request.data
         serializer = RatingSerializer(rating, data=data, many=True, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        data = request.data
         serializer = RatingSerializer(rating, data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
