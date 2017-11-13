@@ -3,6 +3,7 @@
 __pycache__
 MANIFEST
 dist/
+.idea/
 docs/_build/
 docs/locale/
 node_modules/
@@ -11,12 +12,13 @@ tests/.coverage
 build/
 tests/report/
 *.log
-
+*.idea/workspace.xml
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-
+workspace.xml
+fursquare/fursquare/__pycache__/
 # C extensions
 *.so
 
@@ -92,7 +94,7 @@ sftp-config.json
 *.iml
 
 ## Directory-based project format:
-.idea/
+
 # if you remove the above rule, at least ignore the following:
 
 # User-specific stuff:
