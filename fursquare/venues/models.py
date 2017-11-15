@@ -17,7 +17,7 @@ class Venue(models.Model):
                                  message="Phone number must be entered in the format: '+999999999'."
                                          " Up to 15 digits allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=15, blank=True, unique=True)
-    type = models.ForeignKey("VenueType", on_delete=models.CASCADE)
+    type = models.ForeignKey("VenueType", related_name='venues', on_delete=models.CASCADE)
     created_by = models.ForeignKey(User)
 
     def __str__(self):
@@ -44,9 +44,9 @@ class Venue(models.Model):
         return comment_count
 
     @property
-    def total_rating(self):
-        total_rating = self.average_rating * self.vote_count
-        return total_rating
+    def popularity(self):
+        popularity = self.average_rating * self.vote_count
+        return popularity
 
 
 class VenueType(models.Model):

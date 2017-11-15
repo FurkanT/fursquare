@@ -25,19 +25,22 @@
     {% endif %}
     </div>
 
-    <div class="card-columns">
+
     {% for venue in venues %}
+    <div class="card-columns">
+
          <div class="card" style="width: 20rem;">
               <div class="card-block">
                 <h4 class="card-title">{{venue.name}}</h4>
                 <p class="card-text">{{venue.description}}</p>
                   <p><small>rating:{{venue.average_rating}} &nbsp;&nbsp;&nbsp; votes:{{venue.vote_count}}</small></p>
                   <p><small>comments: {{venue.comment_count}}</small></p>
-                <a href="#" class="btn btn-primary">Details</a>
+                <a href="{% url 'venue-detail-from-types' pk=venue.pk slug=venue.type.slug %}" class="btn btn-primary">Details</a>
               </div>
             </div>
+</div>
+
     {% endfor %}
-    </div>
-    </div>
+
 </body>
 </html>

@@ -7,13 +7,13 @@ from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 class VenueAdmin(admin.ModelAdmin):
     model = Venue
-    list_display = ('name', 'type', 'address', 'phone_number')
+    list_display = ('name', 'description', 'type', 'address', 'phone_number', 'created_by')
     search_fields = ('name', 'type')
 
 
 class VenueTypeAdmin(admin.ModelAdmin):
     model = VenueType
-    list_display = ('venue_type', 'created_by', 'is_approved')
+    list_display = ('venue_type', 'created_by', 'is_approved', 'slug')
 
 
 class CommentAdmin(admin.ModelAdmin):
@@ -24,7 +24,6 @@ class CommentAdmin(admin.ModelAdmin):
 class RatingAdmin(admin.ModelAdmin):
     model = Rating
     list_display = ('rating', 'venue', 'rated_by')
-    #list_display = ('sum_of_votes', 'total_vote_count', 'venue', 'rated_by')
 
 
 class ProfileInline(admin.StackedInline):

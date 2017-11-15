@@ -17,10 +17,10 @@
 <div class="container" >
     <div class="row">
         <div class="col-sm-2">
-        {% if venue_type_list %}
+        {% if venue_types %}
         <h4 style="text-align:center">Types</h4>
         <br>
-            {% for type in venue_type_list %}
+            {% for type in venue_types %}
                 <a href="{% url 'venues' slug=type.slug %}" class="list-group-item">{{type.venue_type}} </a>
             {% endfor %}
         {% endif %}

@@ -13,17 +13,16 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import obtain_auth_token
 from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from django.contrib.auth import authenticate
-import ipdb
-from operator import itemgetter
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import Http404
 
 
 def main_page(request):
-    venue_type_list = VenueType.objects.all()
+    venue_types = VenueType.objects.all()
     most_popular_venues = get_most_popular_venues()
     context = {
         'most_popular_venues': most_popular_venues,
-        'venue_type_list': venue_type_list
+        'venue_types': venue_types
     }
     return render(request, "base.html", context)
 
@@ -40,20 +39,28 @@ def venue_page(request, slug):
 
 def venue_detail_page(request, pk):
     venue = get_object_or_404(Venue, pk=pk)
-    comment_list = Comment.objects.filter(commented_to=venue)
-    paginator = Paginator(comment_list, 5)
-    page = request.GET.get('page')
-    try:
-        comments = paginator.page(page)
-    except PageNotAnInteger:
-        comments = paginator.page(1)
-    except EmptyPage:
-        comments = paginator.page(paginator.num_pages)
+    comments = paginate_comments(request, venue)
     context = {
         'venue': venue,
-        'comments': comments
+        'comments': comments,
     }
     return render(request, "venue-detail.html", context)
+
+
+def venue_type_venue_detail_page(request, slug, pk):
+    # probably bad named
+    # venue_detail_page view is used for venue details as expected but this view is reached from the
+    # e.g venue-types/restaurant/x, 'restaurant' is a slug , x is the pk.
+    # the url required to reach detail of a venue from the main page is venues/x
+
+    venue_type = get_object_or_404(VenueType, slug=slug)
+    venue = get_object_or_404(Venue, pk=pk)
+    venues = venue_type.venues.all()
+
+    if venue not in venues:
+        raise Http404("Venue does not exist")
+
+    return venue_detail_page(request, pk)
 
 
 @api_view(['POST'])
@@ -363,10 +370,19 @@ def rating_detail(request, pk):
 
 
 def get_most_popular_venues():
-
-    venue_list = Venue.objects.all()
-    popular_venue_list = sorted(venue_list, key=lambda obj: obj.total_rating, reverse=True)[:10]
-    return popular_venue_list
-
+    venues = Venue.objects.all()
+    popular_venues = sorted(venues, key=lambda obj: obj.popularity, reverse=True)[:10]
+    return popular_venues
 
 
+def paginate_comments(request, venue):
+    comments = Comment.objects.filter(commented_to=venue)
+    paginator = Paginator(comments, 5)
+    page = request.GET.get('page')
+    try:
+        comments = paginator.page(page)
+    except PageNotAnInteger:
+        comments = paginator.page(1)
+    except EmptyPage:
+        comments = paginator.page(paginator.num_pages)
+    return comments
