@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Venues</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous">
+</script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div style="margin-top:50px" class="container">
+    <div class="well">
+        <h3>{{venue_type}}</h3>
+    {% if not venues %}
+    There are no {{venue_type}}s registered yet!
+    {% endif %}
+    </div>
+
+    <div class="card-columns">
+    {% for venue in venues %}
+         <div class="card" style="width: 20rem;">
+              <div class="card-block">
+                <h4 class="card-title">{{venue.name}}</h4>
+                <p class="card-text">{{venue.description}}</p>
+                  <p><small>rating:{{venue.average_rating}} &nbsp;&nbsp;&nbsp; votes:{{venue.vote_count}}</small></p>
+                  <p><small>comments: {{venue.comment_count}}</small></p>
+                <a href="#" class="btn btn-primary">Details</a>
+              </div>
+            </div>
+    {% endfor %}
+    </div>
+    </div>
+</body>
+</html>

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework.authtoken',
+    'django.contrib.humanize',
 ]
 
 REST_FRAMEWORK = {
@@ -68,7 +69,7 @@ ROOT_URLCONF = 'fursquare.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -83,7 +84,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'fursquare.wsgi.application'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+MEDIA_URL = 'media/'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 

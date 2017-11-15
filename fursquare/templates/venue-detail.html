@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+{% load humanize %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Details</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous">
+</script>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="jumbotron">
+    <h2 style="font-family:Comic Sans MS, cursive, sans-serif;text-align:center" class="">{{venue.name}}</h2>
+</div>
+ <div class="container">
+
+
+     <div class="row">
+         <div class="col-sm-4">
+
+             <div class="well">
+                 <h4><strong>Description</strong></h4>
+                 <div>{{venue.description}}</div>
+                 </div>
+
+         </div>
+         <div class="col-sm-6">
+
+         </div>
+         <div class="col-sm-2">
+             <div class="well">
+             <h4> <span class="glyphicon glyphicon-star"></span> {{venue.average_rating}} &nbsp;&nbsp; <small>{{venue.vote_count}} votes </small></h4>
+</div>
+
+         </div>
+     </div>
+
+
+         {% if comments %}
+         <div class="row">
+             <div class="col-sm-12">
+        {{venue.comment_count}} comments
+
+    </div>
+         </div>
+     {% else %}
+          <div class="col-sm-12">
+ No one has commented yet!
+    </div>
+
+         {% endif %}
+<br>
+<div class="container">
+    <div class="row">
+         {% for comment in comments %}
+
+    <div class="col-sm-12">
+
+        <div class="panel panel-default">
+      <div class="panel-heading">{{comment.title}}</div>
+      <div class="panel-body">{{comment.body}}</div>
+            <div class="panel-footer">
+                <strong>{{comment.commented_by}}</strong>
+                <div style="float:right">{{comment.created_date|naturaltime}}</div>
+            </div>
+    </div>
+
+         {% endfor %}
+</div>
+        {% if comments %}
+        <div class="pagination">
+    <span class="step-links">
+        {% if comments.has_previous %}
+            <a href="?page={{ comments.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ comments.number }} of {{ comments.paginator.num_pages }}.
+        </span>
+
+        {% if comments.has_next %}
+            <a href="?page={{ comments.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+        {% endif %}
+</div>
+
+</div>
+ </div>
+
+</body>
+</html>

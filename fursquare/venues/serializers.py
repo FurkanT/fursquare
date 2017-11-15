@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email')
+        fields = ('id', 'username', 'email', 'is_staff')
 
     def create(self, validated_data):
         return User.objects.create(**validated_data)
@@ -24,7 +24,7 @@ class VenueTypeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = VenueType
-        fields = ('id', 'venue_type', 'created_by')
+        fields = ('id', 'venue_type', 'created_by', 'slug')
 
     def create(self, validated_data):
         return VenueType.objects.create(**validated_data)
@@ -36,15 +36,15 @@ class VenueSerializer(serializers.ModelSerializer):
         queryset=User.objects,
         presentation_serializer=UserSerializer
     )
-    venue_type = PresentablePrimaryKeyRelatedField(
+    type = PresentablePrimaryKeyRelatedField(
         queryset=VenueType.objects,
         presentation_serializer=VenueTypeSerializer
     )
 
     class Meta:
         model = Venue
-        fields = ('id', 'venue_name', 'venue_address', 'phone_number', 'created_by', 'venue_type', 'average_rating',
-                  'vote_count', )
+        fields = ('id', 'name', 'description', 'address', 'phone_number', 'created_by', 'type', 'average_rating',
+                  'vote_count', 'comment_count')
 
     def create(self, validated_data):
         rating_data = validated_data.pop('rating')
@@ -66,7 +66,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('id', 'title', 'comment', 'commented_by', 'commented_to', 'created_date')
+        fields = ('id', 'title', 'body', 'commented_by', 'commented_to', 'created_date')
 
     def create(self, validated_data):
         return Comment.objects.create(**validated_data)

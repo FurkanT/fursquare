@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to Fursquare</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous">
+</script>
+</head>
+<body>
+<div class="jumbotron">
+    <h1 style="font-family:Comic Sans MS, cursive, sans-serif;text-align:center" class="">Fursquare</h1>
+    <p style="Comic Sans MS, cursive, sans-serif;text-align:center">Yo</p>
+</div>
+<div class="container" >
+    <div class="row">
+        <div class="col-sm-2">
+        {% if venue_type_list %}
+        <h4 style="text-align:center">Types</h4>
+        <br>
+            {% for type in venue_type_list %}
+                <a href="{% url 'venues' slug=type.slug %}" class="list-group-item">{{type.venue_type}} </a>
+            {% endfor %}
+        {% endif %}
+    </ul>
+            </div>
+        <div class="col-sm-10">
+            <h4 style="text-align:center">Most Popular Venues</h4>
+        <br>
+        <div class="card-columns">
+            {% for venue in most_popular_venues %}
+
+            <div class="card" style="width: 20rem;">
+              <div class="card-block">
+                <h4 class="card-title">{{venue.name}}</h4>
+                <p class="card-text">{{venue.description}}</p>
+                  <p><small>rating:{{venue.average_rating}} &nbsp;&nbsp;&nbsp; votes:{{venue.vote_count}}</small></p>
+                  <p><small>comments: {{venue.comment_count}}</small></p>
+                <a href="{% url 'venue-detail' pk=venue.pk %}" class="btn btn-primary">Details</a>
+              </div>
+            </div>
+
+            {% endfor %}
+        </div>
+
+        </div>
+    </div>
+    <div class="row">
+
+    </div>
+</div>
+</body>
+</html>

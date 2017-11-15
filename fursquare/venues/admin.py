@@ -7,8 +7,8 @@ from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 class VenueAdmin(admin.ModelAdmin):
     model = Venue
-    list_display = ('venue_name', 'venue_type', 'venue_address', 'phone_number')
-    search_fields = ('venue_name', 'venue_type')
+    list_display = ('name', 'type', 'address', 'phone_number')
+    search_fields = ('name', 'type')
 
 
 class VenueTypeAdmin(admin.ModelAdmin):
@@ -18,7 +18,7 @@ class VenueTypeAdmin(admin.ModelAdmin):
 
 class CommentAdmin(admin.ModelAdmin):
     model = Comment
-    list_display = ('title', 'comment', 'commented_by', 'commented_to', 'created_date', 'updated_date')
+    list_display = ('title', 'body', 'commented_by', 'commented_to', 'created_date', 'updated_date')
 
 
 class RatingAdmin(admin.ModelAdmin):
