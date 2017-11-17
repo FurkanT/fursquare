@@ -15,6 +15,7 @@ from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from django.contrib.auth import authenticate
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import Http404
+import json
 
 
 def main_page(request):
@@ -39,7 +40,7 @@ def venue_page(request, slug):
 
 def venue_detail_page(request, pk):
     venue = get_object_or_404(Venue, pk=pk)
-    comments = paginate_comments(request, venue)
+    comments = paginate_comments(request, venue, 5)
     context = {
         'venue': venue,
         'comments': comments,
@@ -47,8 +48,7 @@ def venue_detail_page(request, pk):
     return render(request, "venue-detail.html", context)
 
 
-def venue_type_venue_detail_page(request, slug, pk):
-    # probably bad named
+def check_and_direct_to_venue_detail_page(request, slug, pk):
     # venue_detail_page view is used for venue details as expected but this view is reached from the
     # e.g venue-types/restaurant/x, 'restaurant' is a slug , x is the pk.
     # the url required to reach detail of a venue from the main page is venues/x
@@ -74,7 +74,15 @@ def login(request):
         if not user:
             return Response({"error": "Login failed"}, status=status.HTTP_401_UNAUTHORIZED)
         token = Token.objects.get_or_create(user=user)
+
+        # return Response({"token": token[0]})  # doesn't work ;
+        # TypeError: object of type 'token' isn't json serializable
+
+        # return Response({"token": json.loads(token[0])}) doesn't work;
+        # "json object must be string, bytes, byte array, not token
+
         return Response({"token": str(token[0])})  # token.key doesnt work, had to convert to str to show in JSON
+        # token is a tuple object
 
 
 @api_view(['GET', 'POST'])
@@ -375,9 +383,9 @@ def get_most_popular_venues():
     return popular_venues
 
 
-def paginate_comments(request, venue):
+def paginate_comments(request, venue, page_number):
     comments = Comment.objects.filter(commented_to=venue)
-    paginator = Paginator(comments, 5)
+    paginator = Paginator(comments, page_number)
     page = request.GET.get('page')
     try:
         comments = paginator.page(page)
