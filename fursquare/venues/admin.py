@@ -7,24 +7,23 @@ from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 class VenueAdmin(admin.ModelAdmin):
     model = Venue
-    list_display = ('venue_name', 'venue_type', 'venue_address', 'phone_number')
-    search_fields = ('venue_name', 'venue_type')
+    list_display = ('name', 'description', 'type', 'address', 'phone_number', 'created_by')
+    search_fields = ('name', 'type')
 
 
 class VenueTypeAdmin(admin.ModelAdmin):
     model = VenueType
-    list_display = ('venue_type', 'created_by', 'is_approved')
+    list_display = ('venue_type', 'created_by', 'is_approved', 'slug')
 
 
 class CommentAdmin(admin.ModelAdmin):
     model = Comment
-    list_display = ('title', 'comment', 'commented_by', 'commented_to', 'created_date', 'updated_date')
+    list_display = ('title', 'body', 'commented_by', 'commented_to', 'created_date', 'updated_date')
 
 
 class RatingAdmin(admin.ModelAdmin):
     model = Rating
     list_display = ('rating', 'venue', 'rated_by')
-    #list_display = ('sum_of_votes', 'total_vote_count', 'venue', 'rated_by')
 
 
 class ProfileInline(admin.StackedInline):

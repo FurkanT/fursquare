@@ -10,17 +10,18 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 
 class Venue(models.Model):
-    venue_name = models.CharField(max_length=144, unique=True)
-    venue_address = models.CharField(max_length=256, unique=True)
+    name = models.CharField(max_length=144, unique=True)
+    description = models.CharField(max_length=256, blank=True, null=True)
+    address = models.CharField(max_length=256, unique=True)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
                                  message="Phone number must be entered in the format: '+999999999'."
                                          " Up to 15 digits allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=15, blank=True, unique=True)
-    venue_type = models.ForeignKey("VenueType", on_delete=models.CASCADE)
+    type = models.ForeignKey("VenueType", related_name='venues', on_delete=models.CASCADE)
     created_by = models.ForeignKey(User)
 
     def __str__(self):
-        return self.venue_name
+        return self.name
 
     @property
     def average_rating(self):
@@ -37,11 +38,22 @@ class Venue(models.Model):
         vote_count = Rating.objects.filter(venue__id=self.pk).count()
         return vote_count
 
+    @property
+    def comment_count(self):
+        comment_count = Comment.objects.filter(commented_to__id=self.pk).count()
+        return comment_count
+
+    @property
+    def popularity(self):
+        popularity = self.average_rating * self.vote_count
+        return popularity
+
 
 class VenueType(models.Model):
     venue_type = models.CharField(max_length=105, unique=True)
     created_by = models.ForeignKey(User)
     is_approved = models.BooleanField(default=False)
+    slug = models.SlugField(max_length=50)
 
     def __str__(self):
         return self.venue_type
@@ -49,7 +61,7 @@ class VenueType(models.Model):
 
 class Comment(models.Model):
     title = models.CharField(max_length=124)
-    comment = models.CharField(max_length=255)
+    body = models.CharField(max_length=255)
     commented_by = models.ForeignKey(User)
     commented_to = models.ForeignKey(Venue)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -57,6 +69,9 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        ordering = ["-created_date"]
 
 
 class Rating(models.Model):
