@@ -1,8 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from rest_framework.renderers import JSONRenderer
 from .models import Venue, Comment, Rating, VenueType
 from .serializers import VenueSerializer, CommentSerializer, VenueTypeSerializer, UserSerializer, RatingSerializer
 from rest_framework import status
@@ -10,12 +7,10 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework.authtoken.models import Token
-from rest_framework.authtoken.views import obtain_auth_token
 from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from django.contrib.auth import authenticate
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import Http404
-import json
 
 
 def main_page(request):
@@ -48,7 +43,7 @@ def venue_detail_page(request, pk):
     return render(request, "venue-detail.html", context)
 
 
-def check_and_direct_to_venue_detail_page(request, slug, pk):
+def check_and_redirect_to_venue_detail(request, slug, pk):
     # venue_detail_page view is used for venue details as expected but this view is reached from the
     # e.g venue-types/restaurant/x, 'restaurant' is a slug , x is the pk.
     # the url required to reach detail of a venue from the main page is venues/x
@@ -73,16 +68,8 @@ def login(request):
         user = authenticate(username=username, password=password)
         if not user:
             return Response({"error": "Login failed"}, status=status.HTTP_401_UNAUTHORIZED)
-        token = Token.objects.get_or_create(user=user)
-
-        # return Response({"token": token[0]})  # doesn't work ;
-        # TypeError: object of type 'token' isn't json serializable
-
-        # return Response({"token": json.loads(token[0])}) doesn't work;
-        # "json object must be string, bytes, byte array, not token
-
-        return Response({"token": str(token[0])})  # token.key doesnt work, had to convert to str to show in JSON
-        # token is a tuple object
+        token, is_created = Token.objects.get_or_create(user=user)
+        return Response({"token": token.key, "is_created": is_created})
 
 
 @api_view(['GET', 'POST'])
@@ -90,8 +77,8 @@ def login(request):
 def venue_list(request):
 
     if request.method == 'GET':
-        venue_list = Venue.objects.all()
-        serializer = VenueSerializer(venue_list, many=True)
+        venues = Venue.objects.all()
+        serializer = VenueSerializer(venues, many=True)
         return Response(serializer.data)
 
     elif request.method == 'POST':
@@ -138,8 +125,8 @@ def venue_detail(request, pk):
 def venue_type_list(request):
 
     if request.method == 'GET':
-        venue_type_list = VenueType.objects.all()
-        serializer = VenueTypeSerializer(venue_type_list, many=True)
+        venue_types = VenueType.objects.all()
+        serializer = VenueTypeSerializer(venue_types, many=True)
         return Response(serializer.data)
 
     elif request.method == 'POST':
@@ -185,8 +172,8 @@ def venue_type_detail(request, pk):
 def comment_list(request):
 
     if request.method == 'GET':
-        comment_list = Comment.objects.all()
-        serializer = CommentSerializer(comment_list, many=True)
+        comments = Comment.objects.all()
+        serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
     elif request.method == 'POST':
@@ -231,8 +218,8 @@ def comment_detail(request, pk):
 def user_list(request):
 
     if request.method == 'GET':
-        user_list = User.objects.all()
-        serializer = UserSerializer(user_list, many=True)
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
     elif request.method == 'POST':
@@ -241,7 +228,6 @@ def user_list(request):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-        #return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'PATCH', 'PUT', 'DELETE'])
@@ -277,8 +263,8 @@ def user_detail(request, pk):
 def rating_list(request):
 
     if request.method == 'GET':
-        rating_list = Rating.objects.all()
-        serializer = RatingSerializer(rating_list, many=True)
+        ratings = Rating.objects.all()
+        serializer = RatingSerializer(ratings, many=True)
         return Response(serializer.data)
 
     elif request.method == 'POST':

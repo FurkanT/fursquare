@@ -7,7 +7,7 @@ urlpatterns = [
     url(r'^$', views.main_page, name="main_page"),
     url(r'^venues/(?P<pk>[0-9]+)/$', views.venue_detail_page, name="venue-detail"),
     url(r'^venue-types/(?P<slug>[\w-]+)/$', views.venue_page, name="venues"),
-    url(r'^venue-types/(?P<slug>[\w-]+)/(?P<pk>[0-9]+)/$', views.check_and_direct_to_venue_detail_page,
+    url(r'^venue-types/(?P<slug>[\w-]+)/(?P<pk>[0-9]+)/$', views.check_and_redirect_to_venue_detail,
         name="direct-to-venue-detail"),
     url(r'^api-auth/', include('rest_framework.urls',
                                namespace='rest_framework')),
