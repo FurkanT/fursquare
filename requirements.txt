@@ -15,7 +15,7 @@ djangorestframework==3.7.2
 enum-compat==0.0.2
 eventlet==0.21.0
 greenlet==0.4.12
-httpie==0.9.9
+httpie==1.0.3
 idna==2.6
 ipdb==0.10.3
 ipython==6.2.1
